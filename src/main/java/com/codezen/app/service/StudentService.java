@@ -1,17 +1,11 @@
 package com.codezen.app.service;
 
-import java.util.Arrays;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import com.codezen.app.entity.Student;
+import com.codezen.app.feignclients.AddressFeignClient;
 import com.codezen.app.model.Address;
 import com.codezen.app.model.CreateStudentRequest;
 import com.codezen.app.model.StudentResponse;
@@ -26,8 +20,11 @@ public class StudentService {
 //	@Autowired
 //	private RestTemplate restTemplate;
 	
+//	@Autowired
+//	private WebClient webClient;
+	
 	@Autowired
-	private WebClient webClient;
+	private AddressFeignClient addressFeignClient;
 
 	public StudentResponse createStudent(CreateStudentRequest request) {
 		Student student = new Student();
@@ -65,7 +62,9 @@ public class StudentService {
 		
 		//After spring 2.5 webClient is introduced as resttemplate is gonna deprecate
 		
-		address = webClient.get().uri("getById/" + addressId).retrieve().bodyToMono(Address.class).block();
+//		address = webClient.get().uri("getById/" + addressId).retrieve().bodyToMono(Address.class).block();
+		
+		address = addressFeignClient.getAddressById(addressId).getBody();
 		
 		
 		return address;

@@ -16,10 +16,10 @@ public class StudentConfiguration {
 //	   public RestTemplate getRestTemplate() {
 //	      return new RestTemplate();
 //	   }
-	@Bean
-	public WebClient webClient() {
-	  return WebClient.builder().baseUrl(addressBaseUrl).build();
-	}
+//	@Bean
+//	public WebClient webClient() {
+//	  return WebClient.builder().baseUrl(addressBaseUrl).build();
+//	}
 
 
 
