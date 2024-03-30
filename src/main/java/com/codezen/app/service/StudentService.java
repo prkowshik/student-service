@@ -9,7 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.codezen.app.entity.Student;
 import com.codezen.app.model.Address;
@@ -23,8 +23,11 @@ public class StudentService {
 	@Autowired
 	private StudentRepository studentRepository;
 
+//	@Autowired
+//	private RestTemplate restTemplate;
+	
 	@Autowired
-	private RestTemplate restTemplate;
+	private WebClient webClient;
 
 	public StudentResponse createStudent(CreateStudentRequest request) {
 		Student student = new Student();
@@ -50,13 +53,22 @@ public class StudentService {
 	}
 
 	private Address getAddressById(Integer addressId) {
+		Address address = new Address();
+		
 		// Before spring 2.5, we were using Rest template
-
-		HttpHeaders headers = new HttpHeaders();
+		
+		/*HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<String> entity = new HttpEntity<String>(headers);
 
-		return restTemplate.exchange("http://localhost:8082/api/address/getById/" +addressId, HttpMethod.GET, entity, Address.class).getBody();
+		address = restTemplate.exchange("http://localhost:8080/api/address/getById/" +addressId, HttpMethod.GET, entity, Address.class).getBody();*/
+		
+		//After spring 2.5 webClient is introduced as resttemplate is gonna deprecate
+		
+		address = webClient.get().uri("getById/" + addressId).retrieve().bodyToMono(Address.class).block();
+		
+		
+		return address;
 	}
 
 }
