@@ -1,5 +1,7 @@
 package com.codezen.app.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,8 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @Service
 public class CommonService {
+	
+    private static final  Logger log = LoggerFactory.getLogger(CommonService.class);
 	
 	@Autowired
 	private AddressFeignClient addressFeignClient;
@@ -41,7 +45,7 @@ public class CommonService {
 		
 //		address = webClient.get().uri("getById/" + addressId).retrieve().bodyToMono(Address.class).block();
 		
-		System.out.println("Count..."+count);
+		log.info("Count before calling address Service= {}",count);
 		count++;
 		
 		address = addressFeignClient.getAddressById(addressId).getBody();
@@ -52,7 +56,7 @@ public class CommonService {
 	
 	//method signature should be same as method with @circuitbreaker enabled
 	public Address fallbackGetAddressById(Integer addressId, Throwable exceptionMsg) {
-		System.out.println("Error is..."+exceptionMsg);
+		log.error("Error While calling address Service {}", exceptionMsg);
 		return new Address();
 	}
 

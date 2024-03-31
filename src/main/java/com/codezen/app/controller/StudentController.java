@@ -1,5 +1,7 @@
 package com.codezen.app.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,9 @@ import com.codezen.app.service.StudentService;
 @RequestMapping("/api/student")
 public class StudentController {
 	
+    private static final  Logger log = LoggerFactory.getLogger(StudentController.class);
+
+	
 	@Autowired
 	private StudentService studentService;
 	
@@ -26,6 +31,7 @@ public class StudentController {
 	
 	@GetMapping("/getById/{id}")
 	public StudentResponse getStudentById(@PathVariable Integer id){
+		log.info("Get Student request for id = {}", id);
 		return studentService.getStudentById(id);
 	}
 		

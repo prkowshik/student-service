@@ -5,13 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.codezen.app.entity.Student;
-import com.codezen.app.feignclients.AddressFeignClient;
-import com.codezen.app.model.Address;
 import com.codezen.app.model.CreateStudentRequest;
 import com.codezen.app.model.StudentResponse;
 import com.codezen.app.repository.StudentRepository;
-
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @Service
 public class StudentService {
